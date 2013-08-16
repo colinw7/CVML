@@ -1,0 +1,3 @@
+sub:    call    r5,sub
+        mov     r5^+,output
+        exit    r5

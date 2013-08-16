@@ -1,0 +1,8 @@
+        mov  .3,r0
+        swab r0
+        call sp,print_r0
+        halt
+
+#include "print_r0.vml"
+
+        halt

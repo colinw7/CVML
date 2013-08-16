@@ -1,0 +1,5 @@
+x@0:    .1
+y:      .2
+
+begin:  mov     -6[pc],output
+        mov     -12[pc]^,output

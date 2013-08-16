@@ -1,0 +1,26 @@
+test1:  mov  .32768,r0
+        mov  .32768,r1
+        add  r0,r1
+        bcc  true1
+false1: mov .false_str,r0
+        call sp,print_str
+        brn  test2
+true1:  mov  .true_str,r0
+        call sp,print_str
+
+test2:  mov  .1,r0
+        mov  .2,r1
+        add  r0,r1
+        bcc  true2
+false2: mov .false_str,r0
+        call sp,print_str
+        brn  done
+true2:  mov  .true_str,r0
+        call sp,print_str
+
+done:   halt
+
+true_str : "true\n\0"
+false_str: "false\n\0"
+
+#include "print_str.vml"

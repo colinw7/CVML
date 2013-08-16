@@ -1,0 +1,35 @@
+        mov     input,mult1
+        mov     input,mult2
+
+loop:   mov     mult2,copy
+        and     mask,copy
+        cmp     copy,.0
+        b<>     add
+ret:    mov     mult1,r0
+        sll     r0,.1
+        mov     r0,mult1
+        mov     mask,r0
+        sll     r0,.1
+        mov     r0,mask
+        cmp     r0,.0
+        b<>     loop
+        mov     product,output
+        halt
+
+add:    mov     mult1,store
+        mov     product,copy
+        er      store,product
+        and     copy,store
+        mov     store,r0
+        sll     r0,.1
+        mov     r0,store
+        cmp     r0,.0
+        bne     add
+        brn     ret
+
+mult1:  .0
+mult2:  .0
+mask:   .1
+copy:   .0
+store:  .0
+product:.0

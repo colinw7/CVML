@@ -1,0 +1,8 @@
+look:   mov     2[sp],r0
+        mov     r0,output
+        movb    .10,output
+        mov     .look,-sp^
+        call    r5,see
+        exit    pc
+
+see:    exit    r5

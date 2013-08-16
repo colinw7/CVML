@@ -1,0 +1,6 @@
+        movb .3,r0
+        movb .5,r1
+        add  r0,r1
+        add  .'0',r1
+        movb r1,output
+        movb .'\n',output

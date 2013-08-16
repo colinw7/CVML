@@ -1,0 +1,8 @@
+        mov     .0,r0
+repeatA:mov     .' ',data[r0]
+        add     .1,r0
+untilA: cmp     r0,.20
+        b<      repeatA
+        halt
+
+data: "This is where the data goes"

@@ -1,0 +1,32 @@
+        mov     .0,r0
+start:  cmp     process,.0
+        beq     end
+        mov     data[r0],number
+        add     .2,r0
+        mov     data[r0],calls
+        add     .2,r0
+        mov     calls,r2
+        mul     r2,cost
+        add     fix,r2
+        mov     number,output
+        mov     r2,output
+        movb    .10,output
+        sub     .1,process
+        brn     start
+end:    halt
+
+number: .0
+calls:  .0
+fix:    .1700
+cost:   .5
+process:.5
+data:   .123
+    :   .25
+    :   .124
+    :   .40
+    :   .125
+    :   .6
+    :   .126
+    :   .101
+    :   .127
+    :   .0

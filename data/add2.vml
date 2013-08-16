@@ -1,0 +1,22 @@
+        mov     input,add1
+        mov     input,add2
+        mov     add1,copy1
+        mov     add2,copy2
+
+loop:   mov     copy1,store
+        er      copy2,copy1
+        and     store,copy2
+        mov     copy2,r0
+        sll     r0,.1
+        cmp     r0,.0
+        mov     r0,copy2
+        b<>     loop
+
+        mov     copy1,output
+        halt
+
+add1:   .0
+add2:   .0
+copy1:  .0
+copy2:  .0
+store:  .0

@@ -1,0 +1,8 @@
+a:      mov     input,x
+        mov     input,y
+        cmp     x,y
+        bne     a
+        movb    .'*',output
+        halt
+x:
+y:

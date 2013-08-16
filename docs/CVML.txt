@@ -1,0 +1,72 @@
+Arguments
+---------
+
+-l : line numbers
+-d : dump code to 'codefile'
+-t : trace
+
+Address Space
+-------------
+
+000000 -> 177777
+
+Instructions
+------------
+
+mov x,y  ; y  = x
+add x,y  ; y += x
+sub x,y  ; y -= x
+
+Flags
+-----
+
+N  Negative
+Z  Zero
+C  Carry
+V  Overflow (Carry out of sign bit OR Carry into sign bit)
+
+carry
+
+output @ 177776
+
+Registers
+---------
+
+8 registers
+
+R0 @ 177700
+R1 @ 177702
+R2 @ 177704
+R3 @ 177706
+R4 @ 177710
+R5 @ 177712
+R6 @ 177714 (SP)
+R7 @ 177716 (PC)
+
+input  @ 177720
+output @ 177722
+
+Stack
+-----
+
+Stack limit 177774
+
+Modes
+-----
+
+register or variable name is address
+prefix by '.' to get value
+
+Mode 0 (Register Mode)
+----------------------
+
+Mode 2 (Immediate Mode)
+-----------------------
+
+(r7); r7 += 2
+
+Mode 6 (Relative Mode)
+----------------------
+Index with r7 (pc)
+
+((r7)); r7 += 2

@@ -1,0 +1,40 @@
+        mov     .0,r0
+inloop: mov     input,number[r0]
+        mov     number[r0],output
+        add     .2,r0
+        cmp     r0,.16
+        blt     inloop
+        movb    .10,output
+        mov     .7,count
+again:  mov     .0,r0
+        mov     .0,count1
+        mov     .0,check
+comp:   mov     number[r0],compare1
+        add     .2,r0
+        mov     number[r0],compare2
+        cmp     compare1,compare2
+        bge     cont
+        mov     compare1,number[r0]
+        sub     .2,r0
+        mov     compare2,number[r0]
+        add     .2,r0
+        mov     count1,check
+cont:   add     .1,count1
+        cmp     count1,count
+        bne     comp
+        mov     check,count
+        cmp     count,.0
+        bne     again
+        mov     .14,r0
+out:    mov     number[r0],output
+        sub     .2,r0
+        cmp     r0,.0
+        bge     out
+        halt
+
+check:.0
+count:.0
+count1:.0
+compare1:.0
+compare2:.0
+number[8]:.0

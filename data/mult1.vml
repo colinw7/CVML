@@ -1,0 +1,25 @@
+        mov     input,r0
+        mov     input,r1
+        mov     zero,r4
+        mov     one,r3
+loop:   mov     r1,r2
+        and     r3,r2
+        cmp     r2,zero
+        b<>     add
+ret:    sll     r0,one
+        sll     r3,one
+        cmp     r3,zero
+        b<>     loop
+        mov     r4,output
+        halt
+add:    mov     r0,r5
+        mov     r4,r2
+        er      r5,r4
+        and     r2,r5
+        sll     r5,one
+        cmp     r5,zero
+        b<>     add
+        brn     ret
+
+zero:   .0
+one:    .1

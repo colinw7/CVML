@@ -1,0 +1,37 @@
+        mov     r0,.0
+inloop: mov     input,number[r0]
+        add     .2,r0
+        cmp     r0,.20
+        blt     inloop
+        mov     .9,count
+again:  mov     .0,r0
+        mov     count,count1
+comp:   mov     number[r0],compare1
+        add     .2,r0
+        mov     number[r0],compare2
+        cmp     compare1,compare2
+        bgt     swap
+ret:    sub     .1,count1
+        cmp     count1,.0
+        bne     comp
+        sub     .1,count
+        cmp     count,.0
+        bne     again
+        mov     .18,r0
+out:    mov     number[r0],output
+        sub     .2,r0
+        cmp     r0,.0
+        bge     out
+        halt
+
+swap:   mov     compare1,number[r0]
+        sub     .2,r0
+        mov     compare2,number[r0]
+        add     .2,r0
+        brn     ret
+
+count:.0
+count1:.0
+compare1:.0
+compare2:.0
+number[10]:.0

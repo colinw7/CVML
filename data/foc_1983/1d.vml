@@ -1,0 +1,7 @@
+sub2:   mov     -sp^^,r3
+        call    pc,r3
+        mov     -sp^^,r3
+        call    pc,r3
+        add     .4,sp
+        exit    pc
+        

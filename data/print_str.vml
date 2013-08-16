@@ -1,0 +1,6 @@
+print_str:  cmpb r0^,.0
+            beq  print_str1
+            movb r0^,output
+            add  .1,r0
+            brn  print_str
+print_str1: exit sp

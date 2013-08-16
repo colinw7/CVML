@@ -1,0 +1,19 @@
+test1:  mov  .'a',r0
+        mov  .'b',r1
+        cmpb r0,r1
+        beq  a2
+a1:     mov  .'0',output
+        mov  .'\n',output
+        brn  test2
+a2:     mov  .'1',output
+        mov  .'\n',output
+test2:  mov  .'b',r0
+        mov  .'b',r1
+        cmpb r0,r1
+        beq  b2
+b1:     mov  .'0',output
+        mov  .'\n',output
+        brn  test3
+b2:     mov  .'1',output
+        mov  .'\n',output
+test3:  halt

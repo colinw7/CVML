@@ -1,0 +1,15 @@
+        mov     input,r0
+        mov     input,r1
+        mov     r0,r2
+        mov     r1,r3
+loop:   mov     r2,r4
+        er      r3,r2
+        and     r4,r3
+        sll     r3,one
+        cmp     r3,zero
+        b<>     loop
+        mov     r2,output
+        halt
+
+zero:   .0
+one:    .1

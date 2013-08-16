@@ -1,0 +1,164 @@
+wn[5]:.0
+t:.0
+moves:.0
+rubbish:.0
+data1:"Move truck:  Siding  X  Siding  Y  Siding Z*"
+data2:"          *"
+data3:" moves*"
+
+nosiding:
+        movb    2[sp],r0
+        movb    3[sp],r1
+        movb    .'x',r2
+        add     .'y',r3
+        add     .'z',r4
+        sub     r0,r2
+        sub     r1,r2
+        movb    r2,5[sp]
+        exit    r7
+
+printheading:
+        mov     .0,r0
+again:  cmpb    data1[r0],.'*'
+        b=      finish1
+        movb    data1[r0],output
+        add     .1,r0
+        brn     again
+finish1:
+        movb    .10,output
+        exit    r7
+
+printconfiguration:
+        movb    .' ',output
+        movb    .' ',output
+        movb    3[sp],output
+        mov     .0,r0
+again2: cmpb    data2[r0],.'*'
+        b=      finish2
+        movb    data2[r0],output
+        add     .1,r0
+        brn     again
+finish2:
+for1:   movb    .'x',-1[sp]
+to1:    cmpb    -1[sp],.'z'
+        b>      od1
+do1:
+for2:   movb    .'a',-2[sp]
+to2:    cmpb    -2[sp],.'i'
+        b>      od2
+do2:
+if1:    movb    -2[sp],r0
+        sub     .97,r0
+        cmpb    wn[r0],-1[sp]
+        b<>     else1
+then1:  movb    -2[sp],output
+        brn     fi1
+else1:  movb    .'.',output
+fi1:    movb    -2[sp],r0
+        add     .1,r0
+        movb    r0,-2[sp]
+        brn     to2
+od2:    movb    .' ',output
+        movb    .' ',output
+        movb    -1[sp],r0
+        add     .1,r0
+        movb    r0,-1[sp]
+        brn     to1
+od1:    movb    .10,output
+        exit    r7
+
+move:   movb    2[sp],r0
+        sub     .97,r0
+        movb    3[sp],wn[r0]
+        movb    2[sp],-sp^
+        sub     .1,sp
+        call    r7,printconfiguration
+        add     .2,sp
+        add     .1,moves
+        exit    r7
+
+place:
+if2:    cmpb    2[sp],.'a'
+        b<>     else2
+then2:
+if3:    mov     .'a',r0
+        sub     .97,r0
+        cmpb    wn[r0],3[sp]
+        b=      fi3
+then3:  movb    3[sp],-sp^
+        movb    .'a',-sp^
+        call    r7,move
+        add     .2,sp
+        brn     fi3
+fi3:    brn     fi2
+else2:
+if4:    movb    2[sp],r0
+        sub     .97,r0
+        cmpb    wn[r0],3[sp]
+        b<>     else4
+then4:  mov     sp,r5
+        movb    3[r5],-sp^
+        movb    2[r5],r0
+        sub     .1,r0
+        movb    r0,-sp^
+        call    r7,place
+        add     .2,sp
+        brn     fi4
+else4:  mov     sp,r5
+        sub     .2,sp
+        movb    3[r5],-sp^
+        movb    2[r5],r0
+        sub     .97,r0
+        movb    wn[r0],-sp^
+        call    r7,nosiding
+        add     .3,sp
+        movb    2[r5],r0
+        sub     .1,r0
+        movb    r0,-sp^
+        call    r7,place
+        add     .2,sp
+        mov     sp,r5
+        movb    3[r5],-sp^
+        movb    2[r5],-sp^
+        call    r7,move
+        add     .2,sp
+        mov     sp,r5
+        movb    3[sp],-sp^
+        movb    2[r5],r0
+        sub     .1,r0
+        movb    r0,-sp^
+        call    r7,place
+        add     .2,sp
+fi4:    brn     fi2
+fi2:    exit    r7
+
+begin:  mov     .8192,sp
+        mov     .0,moves
+for3:   movb    .'a',t
+to3:    cmpb    t,.'d'
+        b>      od3
+do3:    movb    t,r0
+        sub     .97,r0
+        movb    input,wn[r0]
+        movb    input,rubbish
+        add     .1,t
+        brn     to3
+od3:    call    r7,printheading
+        movb    .' ',-sp^
+        sub     .1,sp
+        call    r7,printconfiguration
+        add     .2,sp
+        movb    .'x',-sp^
+        movb    .'d',-sp^
+        call    r7,place
+        add     .2,sp
+        mov     moves,output
+        mov     .0,r0
+again3: cmpb    data3[r0],.'*'
+        b=      finish3
+        movb    data3[r0],output
+        add     .1,r0
+        brn     again3
+finish3:
+        movb    .10,output
+        halt

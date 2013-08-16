@@ -1,0 +1,4 @@
+clef:   mov     .01000,r2
+        mul     r2,.-189
+        add     r3,r7
+        exit    r5

@@ -1,0 +1,83 @@
+        ; All Instructions
+
+        mov  r0,r1       ; 01 SS DD
+        cmp  r0,r1       ; 02 SS DD
+        and  r0,r1       ; 03 SS DD
+        er   r0,r1       ; 04 SS DD
+        xor  r0,r1       ; 04 SS DD
+        or   r0,r1       ; 05 SS DD
+        add  r0,r1       ; 06 SS DD
+        movb r0,r1       ; 11 SS DD
+        cmpb r0,r1       ; 12 SS DD
+        andb r0,r1       ; 13 SS DD
+        erb  r0,r1       ; 14 SS DD
+        xorb r0,r1       ; 14 SS DD
+        orb  r0,r1       ; 15 SS DD
+        sub  r0,r1       ; 16 SS DD
+
+        call r0,loop     ; 004 R SS
+        mpy  r0,r1       ; 070 R SS
+        mul  r0,r1       ; 070 R SS
+        mult r0,r1       ; 070 R SS
+        div  r0,r1       ; 071 R SS
+        sll  r0,one      ; 072 R DD
+        slc  r0,one      ; 073 R DD
+        srl  r0,one      ; 172 R DD
+        src  r0,one      ; 173 R DD
+
+loop:   brn  loop        ; 0004 XXX
+        bne  loop        ; 0010 XXX
+        b<>  loop        ; 0010 XXX
+        b<>0 loop        ; 0010 XXX
+        beq  loop        ; 0014 XXX
+        b=   loop        ; 0014 XXX
+        b=0  loop        ; 0014 XXX
+        bge  loop        ; 0020 XXX
+        b>=  loop        ; 0020 XXX
+        b>=0 loop        ; 0020 XXX
+        blt  loop        ; 0024 XXX
+        b<   loop        ; 0024 XXX
+        b<0  loop        ; 0024 XXX
+        bgt  loop        ; 0030 XXX
+        b>   loop        ; 0030 XXX
+        b>0  loop        ; 0030 XXX
+        ble  loop        ; 0034 XXX
+        b<=  loop        ; 0034 XXX
+        b<=0 loop        ; 0034 XXX
+        bvc  loop        ; 1020 XXX
+        bvs  loop        ; 1024 XXX
+        bcc  loop        ; 1030 XXX
+        bcs  loop        ; 1034 XXX
+
+        swab r0          ; 0003 DD
+        not  r0          ; 0051 DD
+        neg  r0          ; 0054 DD
+
+        exit r0          ; 00020 D
+
+        nop              ; 000240
+        stop             ; 000000
+        halt             ; 000000
+
+        ; All Modes
+
+        mov  r0,r0       ; Mode 0            Register
+        mov  r3^,r0      ; Mode 1            Register Deferred
+        mov  .3,r0       ; Mode 2 (pc)       Immediate
+        mov  r3^+,r0     ; Mode 2 (general)  Auto Increment
+        mov  r3^^+,r0    ; Mode 3 (general)  Deferred Auto Increment
+        mov  -r3^,r0     ; Mode 4 (general)  Auto Decrement
+        mov  -r3^^,r0    ; Mode 5 (general)  Deferred Auto Decrement
+        mov  x,r0        ; Mode 6 (pc)       Relative
+        mov  x[r1],r0    ; Mode 6 (general)  Register Offset
+
+zero: .0
+one:  .1
+
+x@80: .17
+
+y: .0145
+
+hw: "Hello World\0"
+
+data[10]: .0

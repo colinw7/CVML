@@ -1,0 +1,14 @@
+begin:  mov x,r0
+        add y,r0
+        mov r0,x
+        sub y,r0
+        mov r0,y
+        mov x,r0
+        sub y,r0
+        mov r0,x
+        mov x,output
+        mov y,output
+        stop
+
+x@80:   .17
+y:      .0145

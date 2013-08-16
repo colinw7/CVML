@@ -1,0 +1,10 @@
+        brn  true
+        halt
+
+true:   mov .true_str,r0
+        call sp,print_str
+        halt
+
+true_str: "true\n\0"
+
+#include "print_str.vml"

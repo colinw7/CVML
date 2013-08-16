@@ -1,0 +1,36 @@
+print_r0:  div r0,.10
+           add .'0',r1
+           mov r1,print_d5
+
+           div r0,.10
+           add .'0',r1
+           mov r1,print_d4
+
+           div r0,.10
+           add .'0',r1
+           mov r1,print_d3
+
+           div r0,.10
+           add .'0',r1
+           mov r1,print_d2
+
+           div r0,.10
+           add .'0',r1
+           mov r1,print_d1
+
+           add .'0',r1
+
+           mov print_d1,output
+           mov print_d2,output
+           mov print_d3,output
+           mov print_d4,output
+           mov print_d5,output
+           mov .'\n',output
+
+           exit sp
+
+print_d1:  .0
+print_d2:  .0
+print_d3:  .0
+print_d4:  .0
+print_d5:  .0

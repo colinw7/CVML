@@ -1,0 +1,24 @@
+        mov     input,dividend
+        mov     dividend,output
+        mov     input,divisor
+        mov     divisor,output
+        mov     dividend,r1
+        div     r1,divisor
+        mov     divisor,r4
+        mul     r4,r1
+        cmp     r4,dividend
+        beq     exact
+        movb    .'n',output
+        movb    .'o',output
+        movb    .'t',output
+        movb    .' ',output
+exact:  movb    .'e',output
+        movb    .'x',output
+        movb    .'a',output
+        movb    .'c',output
+        movb    .'t',output
+        movb    .10,output
+        halt
+        
+divisor:        .0
+dividend:       .0

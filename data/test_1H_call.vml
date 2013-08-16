@@ -1,0 +1,6 @@
+        call r6,subr1
+        halt
+
+subr1:  movb .'1',output
+        movb .'\n',output
+        exit r6

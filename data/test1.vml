@@ -1,0 +1,6 @@
+        mov     .'a',r0
+        mov     .2,r1
+        add     r1,r0
+        movb    r0,output
+        movb    .'\n',output
+        halt

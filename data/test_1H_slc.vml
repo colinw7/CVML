@@ -1,0 +1,6 @@
+        mov  .15,r0
+        slc  r0,.13
+        call r6,print_r0
+        halt
+
+#include "print_r0.vml"
