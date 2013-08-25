@@ -31,8 +31,6 @@ CVMLLine.cpp \
 CVMLOp.cpp \
 CVMLParse.cpp \
 CVMLTest.cpp \
-CReadLine.cpp \
-CHistory.cpp \
 
 CPP_OBJS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(CPP_SRC))
 
@@ -43,7 +41,9 @@ CPPFLAGS = \
 -I../../CStrUtil/include \
 -I../../CFile/include \
 -I../../CMath/include \
+-I../../CReadLine/include \
 -I../../COS/include \
+-I../../CUtil/include \
 
 LFLAGS = \
 $(LEBUG) \
@@ -51,8 +51,9 @@ $(LEBUG) \
 -L../../CArgs/lib \
 -L../../CStrUtil/lib \
 -L../../CFile/lib \
+-L../../CReadLine/lib \
 -L../../COS/lib \
--lCArgs -lCFile -lCOS -lCStrUtil \
+-lCArgs -lCFile -lCReadLine -lCOS -lCStrUtil \
 -lreadline
 
 .SUFFIXES: .cpp
