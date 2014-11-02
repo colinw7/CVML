@@ -1,5 +1,5 @@
-#include "CVMLI.h"
-#include "CVMLOpCodesData.h"
+#include <CVMLI.h>
+#include <CVMLOpCodesData.h>
 #include <CFuncs.h>
 #include <CAux.h>
 #include <cstring>

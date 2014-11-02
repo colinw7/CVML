@@ -1,4 +1,4 @@
-#include "CVMLI.h"
+#include <CVMLI.h>
 
 std::string
 CVMLLabel::
