@@ -103,7 +103,7 @@ decode(const std::string &ifilename, bool verbose)
 
   CFile file(ifilename);
 
-  file.open(CFileBase::READ);
+  file.open(CFileBase::Mode::READ);
 
   if (verbose) {
     vml.outputSections(&file);
@@ -125,7 +125,7 @@ execute(const std::string &ifilename, bool trace_flag)
 
   CFile file(ifilename);
 
-  file.open(CFileBase::READ);
+  file.open(CFileBase::Mode::READ);
 
   vml.setExecuteTrace(trace_flag);
 
@@ -141,7 +141,7 @@ debug(const std::string &ifilename)
 
   CFile file(ifilename);
 
-  file.open(CFileBase::READ);
+  file.open(CFileBase::Mode::READ);
 
   vml.debug(&file);
 
