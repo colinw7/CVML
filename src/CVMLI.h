@@ -3,6 +3,7 @@
 
 #include <CVML.h>
 #include <CVMLOpCodes.h>
+#include <CUtil.h>
 #include <CFile.h>
 #include <CStrUtil.h>
 #include <CStrParse.h>

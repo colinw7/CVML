@@ -1,26 +1,6 @@
 #include <CVMLI.h>
 #include <cstring>
 
-namespace CUtil {
-  void decodeMask(unsigned short full_mask, unsigned short *shift, unsigned short *mask) {
-    *shift = 0;
-
-    while (! (full_mask & 0x0001)) {
-      full_mask >>= 1;
-
-      (*shift)++;
-    }
-
-    *mask = full_mask;
-  }
-}
-
-namespace CMathGen {
-  ushort twosCompliment(short value) {
-    return ~((ushort) -value) + 1;
-  }
-}
-
 bool
 CVMLOp::
 equal(const CVMLOp &op)
