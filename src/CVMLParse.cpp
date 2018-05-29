@@ -189,7 +189,7 @@ parseLine()
       if (dim > 0)
         return false;
 
-      CVMLStringId id = lookupStringId(str);;
+      CVMLStringId id = lookupStringId(str);
 
       data = new CVMLData(this, pc_, id);
     }
