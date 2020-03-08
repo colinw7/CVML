@@ -71,17 +71,17 @@ print(std::ostream &os)
       if (i == 0) {
         os << "  ; .\"";
 
-        for (uint i = 0; i < str.size(); ++i) {
-          if      (str[i] == '\b')
+        for (uint i1 = 0; i1 < str.size(); ++i1) {
+          if      (str[i1] == '\b')
             os << "\\b";
-          else if (str[i] == '\n')
+          else if (str[i1] == '\n')
             os << "\\n";
-          else if (str[i] == '\t')
+          else if (str[i1] == '\t')
             os << "\\t";
-          else if (str[i] == '\0')
+          else if (str[i1] == '\0')
             os << "\\0";
           else
-            os << str[i];
+            os << str[i1];
         }
 
         os << '\"';

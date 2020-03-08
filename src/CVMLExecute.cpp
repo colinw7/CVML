@@ -1448,10 +1448,10 @@ getMemoryWord(ushort addr)
 
     std::string line = readline.readLine();
 
-    short value;
+    short value1;
 
-    if (CStrUtil::toInteger(line, &value))
-      memcpy(&memory_[addr], &value, sizeof(value));
+    if (CStrUtil::toInteger(line, &value1))
+      memcpy(&memory_[addr], &value1, sizeof(value1));
     else {
       memory_[addr + 0] = line[0];
       memory_[addr + 1] = line[1];

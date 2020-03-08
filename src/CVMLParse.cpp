@@ -200,9 +200,9 @@ parseLine()
       uint numParseLabels = parseLabels_.size();
 
       for (uint i = 0; i < numParseLabels; ++i) {
-        CVMLLabel *label = parseLabels_[i];
+        CVMLLabel *label1 = parseLabels_[i];
 
-        line = new CVMLLine(label, data);
+        line = new CVMLLine(label1, data);
 
         addLine(line);
       }
@@ -277,9 +277,9 @@ parseLine()
       uint numParseLabels = parseLabels_.size();
 
       for (uint i = 0; i < numParseLabels; ++i) {
-        CVMLLabel *label = parseLabels_[i];
+        CVMLLabel *label1 = parseLabels_[i];
 
-        line = new CVMLLine(label, op);
+        line = new CVMLLine(label1, op);
 
         addLine(line);
       }
@@ -515,9 +515,9 @@ parseArgument(CVMLArgument &argument)
       if (argument.getType() == CVML_ARGUMENT_VARIABLE_VALUE)
         argument.setArgumentRegisterVarOffset(argument1.getArgRegNum(), argument.getName());
       else {
-        short offset = unsignedToSigned(argument.getInteger());
+        short offset1 = unsignedToSigned(argument.getInteger());
 
-        argument.setArgumentRegisterOffset(argument1.getArgRegNum(), offset);
+        argument.setArgumentRegisterOffset(argument1.getArgRegNum(), offset1);
       }
 
       if (parse_->isChar('^')) {
