@@ -49,12 +49,14 @@ CPPFLAGS = \
 LFLAGS = \
 $(LEBUG) \
 -L$(LIB_DIR) \
+-L../../CUtil/lib \
 -L../../CArgs/lib \
 -L../../CStrUtil/lib \
 -L../../CFile/lib \
+-L../../CMath/lib \
 -L../../CReadLine/lib \
 -L../../COS/lib \
--lCArgs -lCFile -lCReadLine -lCOS -lCStrUtil \
+-lCUtil -lCArgs -lCFile -lCMath -lCReadLine -lCOS -lCStrUtil \
 -lreadline
 
 .SUFFIXES: .cpp
