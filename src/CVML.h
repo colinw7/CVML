@@ -10,7 +10,7 @@
 #include <map>
 #include <sys/types.h>
 
-typedef unsigned char uchar;
+using uchar = unsigned char;
 
 #define CVML_MAGIC   "CVML"
 #define CVML_VERSION 1
@@ -24,8 +24,8 @@ typedef unsigned char uchar;
 #define OP_ARG_0H 5
 #define OP_ARG_0  6
 
-class CVML;
-class CVMLOpCodeData;
+class  CVML;
+struct CVMLOpCodeData;
 
 typedef uint                               CVMLStringId;
 typedef std::map<std::string,CVMLStringId> CVMLStringIdMap;

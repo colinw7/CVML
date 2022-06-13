@@ -5,12 +5,12 @@ class CVMLOp {
  private:
   enum { MAX_ARGUMENTS = 2 };
 
-  CVML          &vml_;
-  CVMLOpCode    *op_code_;
-  uint   pc_;
-  uint   line_num_;
-  uint   num_arguments_;
-  CVMLArgument **arguments_;
+  CVML&          vml_;
+  CVMLOpCode*    op_code_;
+  uint           pc_;
+  uint           line_num_;
+  uint           num_arguments_;
+  CVMLArgument** arguments_;
 
  public:
   CVMLOp(CVML &vml, CVMLOpCode *op_code,
@@ -33,6 +33,8 @@ class CVMLOp {
   bool equal(const CVMLOp &op);
 
   uint getPC() const { return pc_; }
+
+  int lineNum() const { return line_num_; }
 
   void setArgument(uint i, CVMLArgument &argument) {
     if (i < num_arguments_)
