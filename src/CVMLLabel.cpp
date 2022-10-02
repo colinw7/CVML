@@ -25,13 +25,13 @@ bool
 CVMLLabel::
 write(CFile *file)
 {
-  if (! file->write((uchar *) &id_      , sizeof(id_      )))
+  if (! file->write(reinterpret_cast<uchar *>(&id_      ), sizeof(id_      )))
     return false;
 
-  if (! file->write((uchar *) &line_num_, sizeof(line_num_)))
+  if (! file->write(reinterpret_cast<uchar *>(&line_num_), sizeof(line_num_)))
     return false;
 
-  if (! file->write((uchar *) &pc_      , sizeof(pc_      )))
+  if (! file->write(reinterpret_cast<uchar *>(&pc_      ), sizeof(pc_      )))
     return false;
 
   return true;

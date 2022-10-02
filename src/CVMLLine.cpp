@@ -29,7 +29,7 @@ print(std::ostream &os)
   if (label_ != NULL) {
     os << *label_;
 
-    len -= label_->getName().size() + 1;
+    len -= int(label_->getName().size() + 1);
   }
 
   if (len <= 0) {

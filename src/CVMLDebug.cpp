@@ -121,7 +121,7 @@ bool
 CVML::
 debugList(std::vector<std::string> &args)
 {
-  int num_args = args.size();
+  auto num_args = args.size();
 
   int start, end;
 
@@ -131,11 +131,11 @@ debugList(std::vector<std::string> &args)
   }
   else if (num_args == 1) {
     start = 0;
-    end   = CStrUtil::toInteger(args[0]) - 1;
+    end   = int(CStrUtil::toInteger(args[0]) - 1);
   }
   else if (num_args == 2) {
-    start = CStrUtil::toInteger(args[0]);
-    end   = CStrUtil::toInteger(args[1]);
+    start = int(CStrUtil::toInteger(args[0]));
+    end   = int(CStrUtil::toInteger(args[1]));
   }
   else {
     std::cerr << "Too many arguments" << std::endl;
@@ -143,7 +143,7 @@ debugList(std::vector<std::string> &args)
   }
 
   for ( ; start <= end; ++start)
-    debugPrintOffsetLine(start);
+    debugPrintOffsetLine(ushort(start));
 
   return true;
 }
@@ -167,7 +167,7 @@ bool
 CVML::
 debugPrint(std::vector<std::string> &args)
 {
-  uint num_args = args.size();
+  auto num_args = args.size();
 
   for (uint i = 0; i < num_args; ++i)
     debugPrintValue(args[i]);
@@ -255,7 +255,7 @@ debugPrintOffsetLine(ushort offset)
 
     --offset;
 
-    pc += op->getAddressLen();
+    pc += ushort(op->getAddressLen());
   }
 
   op = lookupOpByPC(pc);

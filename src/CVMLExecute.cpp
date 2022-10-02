@@ -65,14 +65,14 @@ loadData(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   uint size1 = 0;
 
   uint num_data;
 
-  if (! file->read((uchar *) &num_data, sizeof(num_data)))
+  if (! file->read(reinterpret_cast<uchar *>(&num_data), sizeof(num_data)))
     return false;
 
   size1 += sizeof(num_data);
@@ -80,7 +80,7 @@ loadData(CFile *file)
   for (uint i = 0; i < num_data; ++i) {
     uint id;
 
-    if (! file->read((uchar *) &id, sizeof(id)))
+    if (! file->read(reinterpret_cast<uchar *>(&id), sizeof(id)))
       return false;
 
     size1 += sizeof(id);
@@ -105,10 +105,10 @@ loadInstructions(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
-  if (! file->read((uchar *) memory_, size))
+  if (! file->read(reinterpret_cast<uchar *>(memory_), size))
     return false;
 
   return true;
@@ -118,7 +118,7 @@ bool
 CVML::
 executeMemory()
 {
-  setRegisterWord(PC_NUM, begin_pc_);
+  setRegisterWord(PC_NUM, ushort(begin_pc_));
   setRegisterWord(SP_NUM, 0);
 
   return executeInstructions();
@@ -193,7 +193,7 @@ bool
 CVML::
 executeOpCode2(ushort i)
 {
-  ushort i1 = i & op_code_data_2.instn_mask;
+  ushort i1 = ushort(i & op_code_data_2.instn_mask);
 
   CVMLExecuteProc2 proc;
   bool             is_byte;
@@ -201,14 +201,14 @@ executeOpCode2(ushort i)
   if (! getExecuteProc2(i1, &proc, &is_byte))
     return false;
 
-  ushort arg1 = (i & op_code_data_2.arg_mask1) >> op_code_data_2.arg_shift1;
-  ushort arg2 =  i & op_code_data_2.arg_mask2;
+  ushort arg1 = ushort((i & op_code_data_2.arg_mask1) >> op_code_data_2.arg_shift1);
+  ushort arg2 = ushort( i & op_code_data_2.arg_mask2);
 
-  ushort mode1 = (arg1 & 070) >> 3;
-  ushort data1 =  arg1 & 007;
+  ushort mode1 = ushort((arg1 & 070) >> 3);
+  ushort data1 = ushort( arg1 & 007);
 
-  ushort mode2 = (arg2 & 070) >> 3;
-  ushort data2 =  arg2 & 007;
+  ushort mode2 = ushort((arg2 & 070) >> 3);
+  ushort data2 = ushort( arg2 & 007);
 
   ushort extraData1, extraData2;
   ushort processData1, processData2;
@@ -237,7 +237,7 @@ bool
 CVML::
 executeOpCode1H(ushort i)
 {
-  ushort i1 = i & op_code_data_1H.instn_mask;
+  ushort i1 = ushort(i & op_code_data_1H.instn_mask);
 
   CVMLExecuteProc2 proc;
   bool             is_byte;
@@ -245,14 +245,14 @@ executeOpCode1H(ushort i)
   if (! getExecuteProc1H(i1, &proc, &is_byte))
     return false;
 
-  ushort arg1 = (i & op_code_data_1H.arg_mask1) >> op_code_data_1H.arg_shift1;
-  ushort arg2 =  i & op_code_data_2.arg_mask2;
+  ushort arg1 = ushort((i & op_code_data_1H.arg_mask1) >> op_code_data_1H.arg_shift1);
+  ushort arg2 = ushort( i & op_code_data_2.arg_mask2);
 
   ushort mode1 = 0;
   ushort data1 = arg1;
 
-  ushort mode2 = (arg2 & 070) >> 3;
-  ushort data2 =  arg2 & 007;
+  ushort mode2 = ushort((arg2 & 070) >> 3);
+  ushort data2 = ushort( arg2 & 007);
 
   ushort extraData1 = 0;
 
@@ -277,7 +277,7 @@ bool
 CVML::
 executeOpCode1a(ushort i)
 {
-  ushort i1 = i & op_code_data_1a.instn_mask;
+  ushort i1 = ushort(i & op_code_data_1a.instn_mask);
 
   CVMLExecuteProc1 proc;
   bool             is_byte;
@@ -285,11 +285,11 @@ executeOpCode1a(ushort i)
   if (! getExecuteProc1a(i1, &proc, &is_byte))
     return false;
 
-  ushort arg1 = (i & op_code_data_1a.arg_mask1) >> op_code_data_1a.arg_shift1;
+  ushort arg1 = ushort((i & op_code_data_1a.arg_mask1) >> op_code_data_1a.arg_shift1);
 
-  char arg2 = unsignedToSigned((uchar) arg1);
+  char arg2 = unsignedToSigned(uchar(arg1));
 
-  ushort processData1 = getRegisterWord(PC_NUM) + 2*arg2;
+  ushort processData1 = getRegisterWord(PC_NUM) + ushort(2*arg2);
 
   (*proc)(*this, processData1);
 
@@ -300,7 +300,7 @@ bool
 CVML::
 executeOpCode1b(ushort i)
 {
-  ushort i1 = i & op_code_data_1b.instn_mask;
+  ushort i1 = ushort(i & op_code_data_1b.instn_mask);
 
   CVMLExecuteProc1 proc;
   bool             is_byte;
@@ -308,7 +308,7 @@ executeOpCode1b(ushort i)
   if (! getExecuteProc1b(i1, &proc, &is_byte))
     return false;
 
-  ushort arg1 = (i & op_code_data_1b.arg_mask1) >> op_code_data_1b.arg_shift1;
+  ushort arg1 = ushort((i & op_code_data_1b.arg_mask1) >> op_code_data_1b.arg_shift1);
 
   ushort mode1 = (arg1 & 070) >> 3;
   ushort data1 =  arg1 & 007;
@@ -331,7 +331,7 @@ bool
 CVML::
 executeOpCode0H(ushort i)
 {
-  ushort i1 = i & op_code_data_0H.instn_mask;
+  ushort i1 = ushort(i & op_code_data_0H.instn_mask);
 
   CVMLExecuteProc1 proc;
   bool             is_byte;
@@ -340,7 +340,7 @@ executeOpCode0H(ushort i)
     return false;
 
   ushort mode1      = 0;
-  ushort data1      = i & op_code_data_0H.arg_mask1;
+  ushort data1      = ushort(i & op_code_data_0H.arg_mask1);
   ushort extraData1 = 0;
 
   ushort processData1;
@@ -677,6 +677,8 @@ processExecuteData(ushort mode, ushort data, ushort extraData, bool is_byte, ush
         value += 2;
 
       setMemoryWord(addr, value);
+
+      break;
     }
     case MODE_AUTO_DECREMENT: {
       ushort addr  = getRegisterAddress(data);
@@ -999,14 +1001,14 @@ executeMul(CVML &vml, ushort data1, ushort data2)
   uint uresult1 =  uresult        & 0xFFFF;
   uint uresult2 = (uresult >> 16) & 0xFFFF;
 
-  vml.setMemoryWord(data1, uresult1);
+  vml.setMemoryWord(data1, ushort(uresult1));
 
   if (vml.execute_trace_flag_)
     vml.traceMessage("mul %hd,%hd; mov @%06o, %hd",
                      uvalue1, uvalue2, data1, uresult1);
 
   if (vml.isEvenRegisterAddress(data1)) {
-    vml.setMemoryWord(data1 + 2, uresult2);
+    vml.setMemoryWord(data1 + 2, ushort(uresult2));
 
     if (vml.execute_trace_flag_)
       vml.traceMessage("mov @%06o, %hd", data1 + 2, uresult2);
@@ -1494,7 +1496,7 @@ CVML::
 setMemoryString(ushort addr, const std::string &str)
 {
   const char *c_str = str.c_str();
-  int         len   = str.size();
+  auto        len   = str.size();
 
   memcpy(&memory_[addr], c_str, len);
 }

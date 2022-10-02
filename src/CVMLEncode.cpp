@@ -50,9 +50,9 @@ writeHeader(CFile *file)
 
   uint version = CVML_VERSION;
 
-  file->write((uchar *) &version, sizeof(version));
+  file->write(reinterpret_cast<uchar *>(&version), sizeof(version));
 
-  file->write((uchar *) &begin_pc_, sizeof(begin_pc_));
+  file->write(reinterpret_cast<uchar *>(&begin_pc_), sizeof(begin_pc_));
 
   return true;
 }
@@ -61,7 +61,7 @@ bool
 CVML::
 writeStringTable(CFile *file)
 {
-  uint num_strs = string_id_map_.size();
+  auto num_strs = string_id_map_.size();
 
   CVMLStringIdMap::const_iterator p1 = string_id_map_.begin();
   CVMLStringIdMap::const_iterator p2 = string_id_map_.end  ();
@@ -80,16 +80,16 @@ writeStringTable(CFile *file)
     size += getWriteStringSize(str);
   }
 
-  file->write((uchar *) &size, sizeof(size));
+  file->write(reinterpret_cast<uchar *>(&size), sizeof(size));
 
   //---
 
-  file->write((uchar *) &num_strs, sizeof(num_strs));
+  file->write(reinterpret_cast<uchar *>(&num_strs), sizeof(num_strs));
 
   for (CVMLStringIdMap::const_iterator p = p1; p != p2; ++p) {
     CVMLStringId id = (*p).second;
 
-    file->write((uchar *) &id, sizeof(id));
+    file->write(reinterpret_cast<uchar *>(&id), sizeof(id));
 
     std::string str = (*p).first;
 
@@ -103,7 +103,7 @@ bool
 CVML::
 writeDebug(CFile *file)
 {
-  uint num_labels = labels_.size();
+  auto num_labels = labels_.size();
 
   LabelList::const_iterator l1 = labels_.begin();
   LabelList::const_iterator l2 = labels_.end  ();
@@ -115,11 +115,11 @@ writeDebug(CFile *file)
   for (LabelList::const_iterator l = l1; l != l2; ++l)
     size += (*l)->getWriteSize();
 
-  file->write((uchar *) &size, sizeof(size));
+  file->write(reinterpret_cast<uchar *>(&size), sizeof(size));
 
   //---
 
-  file->write((uchar *) &num_labels, sizeof(num_labels));
+  file->write(reinterpret_cast<uchar *>(&num_labels), sizeof(num_labels));
 
   for (LabelList::const_iterator l = l1; l != l2; ++l)
     (*l)->write(file);
@@ -161,9 +161,9 @@ writeData(CFile *file)
 
   //----
 
-  file->write((uchar *) &size, sizeof(size));
+  file->write(reinterpret_cast<uchar *>(&size), sizeof(size));
 
-  file->write((uchar *) &num_data, sizeof(num_data));
+  file->write(reinterpret_cast<uchar *>(&num_data), sizeof(num_data));
 
   for (LineList::const_iterator line = line1; line != line2; ++line) {
     if (! (*line)->isData())
@@ -176,7 +176,7 @@ writeData(CFile *file)
     if (label != NULL)
       id = label->getId();
 
-    file->write((uchar *) &id, sizeof(id));
+    file->write(reinterpret_cast<uchar *>(&id), sizeof(id));
 
     CVMLData *data = (*line)->getData();
 
@@ -232,7 +232,7 @@ writeInstructions(CFile *file)
 
   pc_ = 0;
 
-  file->write((uchar *) &size, sizeof(size));
+  file->write(reinterpret_cast<uchar *>(&size), sizeof(size));
 
   for (LineList::const_iterator line = line1; line != line2; ++line) {
     if (! (*line)->isOp())
@@ -259,16 +259,16 @@ bool
 CVML::
 writeString(CFile *file, const std::string &str)
 {
-  uint len = str.size();
+  uint len = uint(str.size());
 
-  if (! file->write((uchar *) &len, sizeof(len)))
+  if (! file->write(reinterpret_cast<uchar *>(&len), sizeof(len)))
     return false;
 
   len = getWriteStringLen(len);
 
   const char *cstr = str.c_str();
 
-  if (! file->write((uchar *) cstr, len))
+  if (! file->write(reinterpret_cast<uchar *>(const_cast<char *>(cstr)), len))
     return false;
 
   return true;
@@ -278,12 +278,12 @@ bool
 CVML::
 writeString(CFile *file, const char *str, uint len)
 {
-  if (! file->write((uchar *) &len, sizeof(len)))
+  if (! file->write(reinterpret_cast<uchar *>(&len), sizeof(len)))
     return false;
 
   len = getWriteStringLen(len);
 
-  if (! file->write((uchar *) str, len))
+  if (! file->write(reinterpret_cast<uchar *>(const_cast<char *>(str)), len))
     return false;
 
   return true;
@@ -293,7 +293,7 @@ uint
 CVML::
 getWriteStringSize(const std::string &str)
 {
-  uint len = str.size();
+  uint len = uint(str.size());
 
   return getWriteStringSize(len);
 }

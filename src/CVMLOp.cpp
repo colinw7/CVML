@@ -107,7 +107,7 @@ ushort
 CVMLOp::
 getValue(ushort *extraValue1, bool *extraValueFlag1, ushort *extraValue2, bool *extraValueFlag2)
 {
-  ushort value = op_code_->code;
+  ushort value = ushort(op_code_->code);
 
   *extraValueFlag1 = false;
   *extraValueFlag2 = false;
@@ -118,20 +118,18 @@ getValue(ushort *extraValue1, bool *extraValueFlag1, ushort *extraValue2, bool *
     if (arguments_[0]->getArgExtraValue())
       offset += 2;
 
-    ushort value1 =
-      arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset);
+    ushort value1 = ushort(arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset));
 
     if (arguments_[1]->getArgExtraValue())
       offset += 2;
 
-    ushort value2 =
-      arguments_[1]->getArgValue(extraValue2, extraValueFlag2, offset);
+    ushort value2 = ushort(arguments_[1]->getArgValue(extraValue2, extraValueFlag2, offset));
 
     ushort shift1, mask1;
     ushort shift2, mask2;
 
-    CUtil::decodeMask(op_code_->data->arg_mask1, &shift1, &mask1);
-    CUtil::decodeMask(op_code_->data->arg_mask2, &shift2, &mask2);
+    CUtil::decodeMask(ushort(op_code_->data->arg_mask1), &shift1, &mask1);
+    CUtil::decodeMask(ushort(op_code_->data->arg_mask2), &shift2, &mask2);
 
     value = vml_.addOpValue(value, value1, shift1, mask1);
     value = vml_.addOpValue(value, value2, shift2, mask2);
@@ -142,20 +140,18 @@ getValue(ushort *extraValue1, bool *extraValueFlag1, ushort *extraValue2, bool *
     if (arguments_[0]->getArgExtraValue())
       offset += 2;
 
-    ushort value1 =
-      arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset);
+    ushort value1 = ushort(arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset));
 
     if (arguments_[1]->getArgExtraValue())
       offset += 2;
 
-    ushort value2 =
-      arguments_[1]->getArgValue(extraValue2, extraValueFlag2, offset);
+    ushort value2 = ushort(arguments_[1]->getArgValue(extraValue2, extraValueFlag2, offset));
 
     ushort shift1, mask1;
     ushort shift2, mask2;
 
-    CUtil::decodeMask(op_code_->data->arg_mask1, &shift1, &mask1);
-    CUtil::decodeMask(op_code_->data->arg_mask2, &shift2, &mask2);
+    CUtil::decodeMask(ushort(op_code_->data->arg_mask1), &shift1, &mask1);
+    CUtil::decodeMask(ushort(op_code_->data->arg_mask2), &shift2, &mask2);
 
     value = vml_.addOpValue(value, value1, shift1, mask1);
     value = vml_.addOpValue(value, value2, shift2, mask2);
@@ -163,16 +159,15 @@ getValue(ushort *extraValue1, bool *extraValueFlag1, ushort *extraValue2, bool *
   else if (op_code_->data->type == OP_ARG_1a) {
     ushort offset = 2;
 
-    (void)
-      arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset);
+    (void) arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset);
 
     *extraValueFlag1 = false;
 
     ushort shift1, mask1;
 
-    CUtil::decodeMask(op_code_->data->arg_mask1, &shift1, &mask1);
+    CUtil::decodeMask(ushort(op_code_->data->arg_mask1), &shift1, &mask1);
 
-    short s = *(short *) extraValue1;
+    short s = *reinterpret_cast<short *>(extraValue1);
 
     s /= 2;
 
@@ -186,12 +181,11 @@ getValue(ushort *extraValue1, bool *extraValueFlag1, ushort *extraValue2, bool *
     if (arguments_[0]->getArgExtraValue())
       offset += 2;
 
-    ushort value1 =
-      arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset);
+    ushort value1 = ushort(arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset));
 
     ushort shift1, mask1;
 
-    CUtil::decodeMask(op_code_->data->arg_mask1, &shift1, &mask1);
+    CUtil::decodeMask(ushort(op_code_->data->arg_mask1), &shift1, &mask1);
 
     value = vml_.addOpValue(value, value1, shift1, mask1);
   }
@@ -201,12 +195,11 @@ getValue(ushort *extraValue1, bool *extraValueFlag1, ushort *extraValue2, bool *
     if (arguments_[0]->getArgExtraValue())
       offset += 2;
 
-    ushort value1 =
-      arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset);
+    ushort value1 = ushort(arguments_[0]->getArgValue(extraValue1, extraValueFlag1, offset));
 
     ushort shift1, mask1;
 
-    CUtil::decodeMask(op_code_->data->arg_mask1, &shift1, &mask1);
+    CUtil::decodeMask(ushort(op_code_->data->arg_mask1), &shift1, &mask1);
 
     value = vml_.addOpValue(value, value1, shift1, mask1);
   }
@@ -273,7 +266,7 @@ printCode(std::ostream &os)
 
   os << op_code_->name;
 
-  len -= strlen(op_code_->name);
+  len -= int(strlen(op_code_->name));
 
   for (int i = 0; i < len; ++i)
     os << " ";

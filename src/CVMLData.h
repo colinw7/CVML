@@ -28,7 +28,7 @@ class CVMLData {
     data_.c = c;
   }
 
-  CVMLData(CVML *vml, uint pc, int integer, int dim = 0) :
+  CVMLData(CVML *vml, uint pc, ushort integer, int dim = 0) :
    vml_(vml), pc_(pc), type_(DATA_TYPE_INTEGER), dim_(dim) {
     data_.integer = integer;
   }

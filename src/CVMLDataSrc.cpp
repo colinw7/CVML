@@ -4,7 +4,7 @@ bool
 CVMLFileDataSource::
 getNextWord(ushort *s)
 {
-  if (! file_->read((uchar *) s, sizeof(*s))) {
+  if (! file_->read(reinterpret_cast<uchar *>(s), sizeof(*s))) {
     throw CVMLError("Failed to read instruction");
     return false;
   }

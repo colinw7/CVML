@@ -42,18 +42,18 @@ outputHeader(CFile *file)
   uint version;
   char magic[4];
 
-  if (! file->read((uchar *) magic, 4))
+  if (! file->read(reinterpret_cast<uchar *>(magic), 4))
     return false;
 
   if (strncmp(magic, CVML_MAGIC, 4) != 0)
     return false;
 
-  if (! file->read((uchar *) &version, sizeof(version)))
+  if (! file->read(reinterpret_cast<uchar *>(&version), sizeof(version)))
     return false;
 
   std::cout << "Version: " << version << std::endl;
 
-  if (! file->read((uchar *) &begin_pc_, sizeof(begin_pc_)))
+  if (! file->read(reinterpret_cast<uchar *>(&begin_pc_), sizeof(begin_pc_)))
     return false;
 
   std::cout << "Begin PC: " << CStrUtil::strprintf("%06o", begin_pc_) << std::endl;
@@ -67,14 +67,14 @@ outputStringTable(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   uint size1 = 0;
 
   uint num_strs;
 
-  if (! file->read((uchar *) &num_strs, sizeof(num_strs)))
+  if (! file->read(reinterpret_cast<uchar *>(&num_strs), sizeof(num_strs)))
     return false;
 
   std::cout << "String Table: Num=" << num_strs << " Size=" << size << std::endl;
@@ -84,7 +84,7 @@ outputStringTable(CFile *file)
   for (uint i = 0; i < num_strs; ++i) {
     CVMLStringId id;
 
-    if (! file->read((uchar *) &id, sizeof(id)))
+    if (! file->read(reinterpret_cast<uchar *>(&id), sizeof(id)))
       return false;
 
     size1 += sizeof(id);
@@ -110,14 +110,14 @@ outputDebug(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   uint size1 = 0;
 
   uint num_labels;
 
-  if (! file->read((uchar *) &num_labels, sizeof(num_labels)))
+  if (! file->read(reinterpret_cast<uchar *>(&num_labels), sizeof(num_labels)))
     return false;
 
   std::cout << "Debug Section: Num=" << num_labels << " Size=" << size << std::endl;
@@ -127,21 +127,21 @@ outputDebug(CFile *file)
   for (uint i = 0; i < num_labels; ++i) {
     CVMLStringId id;
 
-    if (! file->read((uchar *) &id, sizeof(id)))
+    if (! file->read(reinterpret_cast<uchar *>(&id), sizeof(id)))
       return false;
 
     size1 += sizeof(id);
 
     uint line_num;
 
-    if (! file->read((uchar *) &line_num, sizeof(line_num)))
+    if (! file->read(reinterpret_cast<uchar *>(&line_num), sizeof(line_num)))
       return false;
 
     size1 += sizeof(line_num);
 
     uint pc;
 
-    if (! file->read((uchar *) &pc, sizeof(pc)))
+    if (! file->read(reinterpret_cast<uchar *>(&pc), sizeof(pc)))
       return false;
 
     size1 += sizeof(pc);
@@ -161,14 +161,14 @@ outputData(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   uint size1 = 0;
 
   uint num_data;
 
-  if (! file->read((uchar *) &num_data, sizeof(num_data)))
+  if (! file->read(reinterpret_cast<uchar *>(&num_data), sizeof(num_data)))
     return false;
 
   std::cout << "Data Section: Num=" << num_data << " Size=" << size << std::endl;
@@ -178,7 +178,7 @@ outputData(CFile *file)
   for (uint i = 0; i < num_data; ++i) {
     uint id;
 
-    if (! file->read((uchar *) &id, sizeof(id)))
+    if (! file->read(reinterpret_cast<uchar *>(&id), sizeof(id)))
       return false;
 
     size1 += sizeof(id);
@@ -211,12 +211,12 @@ outputInstructions(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   uchar *data = new uchar [size];
 
-  if (! file->read((uchar *) data, size))
+  if (! file->read(reinterpret_cast<uchar *>(data), size))
     return false;
 
   std::cout << "Code Section: " << size << " Bytes" << std::endl;
@@ -285,7 +285,7 @@ readHeader(CFile *file)
 {
   char magic[4];
 
-  if (! file->read((uchar *) magic, 4))
+  if (! file->read(reinterpret_cast<uchar *>(magic), 4))
     return false;
 
   if (strncmp(magic, CVML_MAGIC, 4) != 0)
@@ -293,10 +293,10 @@ readHeader(CFile *file)
 
   uint version;
 
-  if (! file->read((uchar *) &version, sizeof(version)))
+  if (! file->read(reinterpret_cast<uchar *>(&version), sizeof(version)))
     return false;
 
-  if (! file->read((uchar *) &begin_pc_, sizeof(begin_pc_)))
+  if (! file->read(reinterpret_cast<uchar *>(&begin_pc_), sizeof(begin_pc_)))
     return false;
 
   return true;
@@ -308,14 +308,14 @@ readStringTable(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   uint size1 = 0;
 
   uint num_strs;
 
-  if (! file->read((uchar *) &num_strs, sizeof(num_strs)))
+  if (! file->read(reinterpret_cast<uchar *>(&num_strs), sizeof(num_strs)))
     return false;
 
   size1 += sizeof(num_strs);
@@ -323,7 +323,7 @@ readStringTable(CFile *file)
   for (uint i = 0; i < num_strs; ++i) {
     CVMLStringId id;
 
-    if (! file->read((uchar *) &id, sizeof(id)))
+    if (! file->read(reinterpret_cast<uchar *>(&id), sizeof(id)))
       return false;
 
     size1 += sizeof(id);
@@ -350,7 +350,7 @@ skipStringTable(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   if (! file->setRPos(size))
@@ -365,14 +365,14 @@ readDebug(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   uint size1 = 0;
 
   uint num_labels;
 
-  if (! file->read((uchar *) &num_labels, sizeof(num_labels)))
+  if (! file->read(reinterpret_cast<uchar *>(&num_labels), sizeof(num_labels)))
     return false;
 
   size1 += sizeof(num_labels);
@@ -380,21 +380,21 @@ readDebug(CFile *file)
   for (uint i = 0; i < num_labels; ++i) {
     CVMLStringId id;
 
-    if (! file->read((uchar *) &id, sizeof(id)))
+    if (! file->read(reinterpret_cast<uchar *>(&id), sizeof(id)))
       return false;
 
     size1 += sizeof(id);
 
     uint line_num;
 
-    if (! file->read((uchar *) &line_num, sizeof(line_num)))
+    if (! file->read(reinterpret_cast<uchar *>(&line_num), sizeof(line_num)))
       return false;
 
     size1 += sizeof(line_num);
 
     uint pc;
 
-    if (! file->read((uchar *) &pc, sizeof(pc)))
+    if (! file->read(reinterpret_cast<uchar *>(&pc), sizeof(pc)))
       return false;
 
     size1 += sizeof(pc);
@@ -416,7 +416,7 @@ skipDebug(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   if (! file->setRPos(size))
@@ -431,14 +431,14 @@ readData(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   uint size1 = 0;
 
   uint num_data;
 
-  if (! file->read((uchar *) &num_data, sizeof(num_data)))
+  if (! file->read(reinterpret_cast<uchar *>(&num_data), sizeof(num_data)))
     return false;
 
   size1 += sizeof(num_data);
@@ -446,7 +446,7 @@ readData(CFile *file)
   for (uint i = 0; i < num_data; ++i) {
     uint id;
 
-    if (! file->read((uchar *) &id, sizeof(id)))
+    if (! file->read(reinterpret_cast<uchar *>(&id), sizeof(id)))
       return false;
 
     size1 += sizeof(id);
@@ -484,7 +484,7 @@ skipData(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   if (! file->setRPos(size))
@@ -499,7 +499,7 @@ readInstructions(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   while (pc_ < size) {
@@ -525,7 +525,7 @@ readInstructions(CFile *file)
       ushort s;
 
       for (uint i = 0; i < len; ++i) {
-        if (! file->read((uchar *) &s, sizeof(s))) {
+        if (! file->read(reinterpret_cast<uchar *>(&s), sizeof(s))) {
           std::cerr << "Failed to read data" << std::endl;
           return false;
         }
@@ -546,7 +546,7 @@ skipInstructions(CFile *file)
 {
   uint size;
 
-  if (! file->read((uchar *) &size, sizeof(size)))
+  if (! file->read(reinterpret_cast<uchar *>(&size), sizeof(size)))
     return false;
 
   if (! file->setRPos(size))
@@ -563,7 +563,7 @@ readString(CFile *file, std::string &str)
 
   uint len;
 
-  if (! file->read((uchar *) &len, sizeof(len)))
+  if (! file->read(reinterpret_cast<uchar *>(&len), sizeof(len)))
     return false;
 
   size += sizeof(len);
@@ -575,7 +575,7 @@ readString(CFile *file, std::string &str)
 
   char *cstr = new char [len1 + 1];
 
-  if (! file->read((uchar *) cstr, len1)) {
+  if (! file->read(reinterpret_cast<uchar *>(cstr), len1)) {
     delete [] cstr;
     return false;
   }

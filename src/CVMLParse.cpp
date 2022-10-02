@@ -171,13 +171,13 @@ parseLine()
         if (is_char)
           data = new CVMLData(this, pc_, char(value), dim);
         else
-          data = new CVMLData(this, pc_, value, dim);
+          data = new CVMLData(this, pc_, ushort(value), dim);
       }
       else {
         if (is_char)
           data = new CVMLData(this, pc_, char(value));
         else
-          data = new CVMLData(this, pc_, value);
+          data = new CVMLData(this, pc_, ushort(value));
       }
     }
     else if (parse_->isChar('\"')) {
@@ -197,7 +197,7 @@ parseLine()
     if (data != NULL) {
       CVMLLine *line = NULL;
 
-      uint numParseLabels = parseLabels_.size();
+      auto numParseLabels = parseLabels_.size();
 
       for (uint i = 0; i < numParseLabels; ++i) {
         CVMLLabel *label1 = parseLabels_[i];
@@ -274,7 +274,7 @@ parseLine()
     CVMLLine *line = NULL;
 
     if (! parseLabels_.empty()) {
-      uint numParseLabels = parseLabels_.size();
+      auto numParseLabels = parseLabels_.size();
 
       for (uint i = 0; i < numParseLabels; ++i) {
         CVMLLabel *label1 = parseLabels_[i];
@@ -438,7 +438,7 @@ parseArgument(CVMLArgument &argument)
       if (is_char)
         argument.setArgumentChar(char(value));
       else
-        argument.setArgumentInteger(value);
+        argument.setArgumentInteger(ushort(value));
     }
     else {
       parse_->skipChar();
@@ -477,14 +477,14 @@ parseArgument(CVMLArgument &argument)
         decrement = false;
       }
 
-      argument.setArgumentInteger(offset);
+      argument.setArgumentInteger(ushort(offset));
     }
     else {
       if (! parse_->readIdentifier(identifier))
         goto fail;
 
       if (isRegister(identifier, &reg_num))
-        argument.setArgumentRegisterAddr(reg_num);
+        argument.setArgumentRegisterAddr(ushort(reg_num));
       else
         argument.setArgumentVariableAddr(identifier);
     }
@@ -513,11 +513,11 @@ parseArgument(CVMLArgument &argument)
         goto fail;
 
       if (argument.getType() == CVML_ARGUMENT_VARIABLE_VALUE)
-        argument.setArgumentRegisterVarOffset(argument1.getArgRegNum(), argument.getName());
+        argument.setArgumentRegisterVarOffset(ushort(argument1.getArgRegNum()), argument.getName());
       else {
-        short offset1 = unsignedToSigned(argument.getInteger());
+        short offset1 = unsignedToSigned(ushort(argument.getInteger()));
 
-        argument.setArgumentRegisterOffset(argument1.getArgRegNum(), offset1);
+        argument.setArgumentRegisterOffset(ushort(argument1.getArgRegNum()), offset1);
       }
 
       if (parse_->isChar('^')) {
@@ -813,16 +813,16 @@ parseBin(const std::string &ifilename, const std::string &ofilename)
   if (! parseBinFile(ifilename, codes))
     goto fail;
 
-  num_codes = codes.size();
+  num_codes = uint(codes.size());
 
   size = num_codes*sizeof(ushort);
 
-  file.write((uchar *) &size, sizeof(size));
+  file.write(reinterpret_cast<uchar *>(&size), sizeof(size));
 
   for (uint i = 0; i < num_codes; ++i) {
     ushort code = codes[i];
 
-    file.write((uchar *) &code, sizeof(code));
+    file.write(reinterpret_cast<uchar *>(&code), sizeof(code));
   }
 
   file.close();
@@ -912,13 +912,13 @@ parseBinLine(std::vector<ushort> &codes)
   if (! CStrUtil::toBaseInteger(code   , 8, &code_val   ))
     goto fail;
 
-  while (pc_ < (ushort) address_val) {
+  while (pc_ < ushort(address_val)) {
     codes.push_back(0);
 
     pc_ += 2;
   }
 
-  codes.push_back(code_val);
+  codes.push_back(ushort(code_val));
 
   pc_ += 2;
 

@@ -319,22 +319,22 @@ print(std::ostream &os)
       break;
     case CVML_ARGUMENT_REGISTER_OFFSET:
       os << data_.offset_reg.offset << "[" <<
-            vml_->getRegisterName(data_.offset_reg.reg_num) << "]";
+            vml_->getRegisterName(ushort(data_.offset_reg.reg_num)) << "]";
 
       break;
     case CVML_ARGUMENT_REGISTER_OFFSET_DEFERRED:
       os << data_.offset_reg.offset << "[" <<
-            vml_->getRegisterName(data_.offset_reg.reg_num) << "]^";
+            vml_->getRegisterName(ushort(data_.offset_reg.reg_num)) << "]^";
 
       break;
     case CVML_ARGUMENT_REGISTER_VAR_OFFSET:
       os << data_.offset_var_reg.name << "[" <<
-            vml_->getRegisterName(data_.offset_var_reg.reg_num) << "]";
+            vml_->getRegisterName(ushort(data_.offset_var_reg.reg_num)) << "]";
 
       break;
     case CVML_ARGUMENT_REGISTER_VAR_OFFSET_DEFERRED:
       os << data_.offset_var_reg.name << "[" <<
-            vml_->getRegisterName(data_.offset_var_reg.reg_num) << "]^";
+            vml_->getRegisterName(ushort(data_.offset_var_reg.reg_num)) << "]^";
 
       break;
     case CVML_ARGUMENT_REGISTER_VALUE_INCR:
@@ -382,9 +382,9 @@ print(std::ostream &os, bool arg_signed, uint arg_bits)
 
       if (arg_signed) {
         if (arg_bits == 8)
-          os << (int) vml_->unsignedToSigned((uchar) data_.integer);
+          os << int(vml_->unsignedToSigned(uchar(data_.integer)));
         else
-          os << (int) vml_->unsignedToSigned((ushort) data_.integer);
+          os << int(vml_->unsignedToSigned(ushort(data_.integer)));
       }
       else
         os << data_.integer;
@@ -401,22 +401,22 @@ print(std::ostream &os, bool arg_signed, uint arg_bits)
       break;
     case CVML_ARGUMENT_REGISTER_OFFSET:
       os << data_.offset_reg.offset << "[" <<
-            vml_->getRegisterName(data_.offset_reg.reg_num) << "]";
+            vml_->getRegisterName(ushort(data_.offset_reg.reg_num)) << "]";
 
       break;
     case CVML_ARGUMENT_REGISTER_OFFSET_DEFERRED:
       os << data_.offset_reg.offset << "[" <<
-            vml_->getRegisterName(data_.offset_reg.reg_num) << "]^";
+            vml_->getRegisterName(ushort(data_.offset_reg.reg_num)) << "]^";
 
       break;
     case CVML_ARGUMENT_REGISTER_VAR_OFFSET:
       os << data_.offset_var_reg.name << "[" <<
-            vml_->getRegisterName(data_.offset_var_reg.reg_num) << "]";
+            vml_->getRegisterName(ushort(data_.offset_var_reg.reg_num)) << "]";
 
       break;
     case CVML_ARGUMENT_REGISTER_VAR_OFFSET_DEFERRED:
       os << data_.offset_var_reg.name << "[" <<
-            vml_->getRegisterName(data_.offset_var_reg.reg_num) << "]^";
+            vml_->getRegisterName(ushort(data_.offset_var_reg.reg_num)) << "]^";
 
       break;
     case CVML_ARGUMENT_REGISTER_VALUE_INCR:
@@ -508,7 +508,7 @@ getArgValue(ushort *extraValue, bool *extraValueFlag, int offset)
 
       value           = 027;
       *extraValueFlag = true;
-      *extraValue     = addr;
+      *extraValue     = ushort(addr);
 
       break;
     }
@@ -536,14 +536,14 @@ getArgValue(ushort *extraValue, bool *extraValueFlag, int offset)
 
       value           = 067;
       *extraValueFlag = true;
-      *extraValue     = addr - vml_->getPC() - offset;
+      *extraValue     = ushort(addr - vml_->getPC() - offset);
 
       break;
     }
     case CVML_ARGUMENT_REGISTER_OFFSET:
       value           = 060 + data_.offset_reg.reg_num;
       *extraValueFlag = true;
-      *extraValue     = data_.offset_reg.offset;
+      *extraValue     = ushort(data_.offset_reg.offset);
 
       break;
     case CVML_ARGUMENT_REGISTER_VAR_OFFSET: {
@@ -554,14 +554,14 @@ getArgValue(ushort *extraValue, bool *extraValueFlag, int offset)
 
       value           = 060 + data_.offset_var_reg.reg_num;
       *extraValueFlag = true;
-      *extraValue     = addr;
+      *extraValue     = ushort(addr);
 
       break;
     }
     case CVML_ARGUMENT_REGISTER_OFFSET_DEFERRED: {
       value           = 070 + data_.offset_reg.reg_num;
       *extraValueFlag = true;
-      *extraValue     = data_.offset_reg.offset;
+      *extraValue     = ushort(data_.offset_reg.offset);
 
       break;
     }
@@ -573,7 +573,7 @@ getArgValue(ushort *extraValue, bool *extraValueFlag, int offset)
 
       value           = 070 + data_.offset_var_reg.reg_num;
       *extraValueFlag = true;
-      *extraValue     = addr;
+      *extraValue     = ushort(addr);
 
       break;
     }

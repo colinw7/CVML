@@ -12,7 +12,7 @@ getAddressLen()
   else {
     const std::string &str = vml_->lookupIdString(getStringValue());
 
-    return vml_->getWriteStringLen(str.size());
+    return vml_->getWriteStringLen(uint(str.size()));
   }
 }
 
@@ -28,7 +28,7 @@ print(std::ostream &os)
 
     for (uint i = 0; i < dim; ++i) {
       if (i > 0)
-        os << std::endl << "        ";
+        os << "\n        ";
 
       short value = 0;
 
@@ -56,11 +56,11 @@ print(std::ostream &os)
   else {
     const std::string &str = vml_->lookupIdString(getStringValue());
 
-    uint hlen = vml_->getWriteStringLen(str.size())/2;
+    uint hlen = vml_->getWriteStringLen(uint(str.size()))/2;
 
     for (uint i = 0; i < hlen; ++i) {
       if (i > 0)
-        os << std::endl << "        ";
+        os << "\n        ";
 
       short value = 0;
 
@@ -105,7 +105,7 @@ getWriteSize()
   else {
     const std::string &str = vml_->lookupIdString(getStringValue());
 
-    size += vml_->getWriteStringSize(str.size());
+    size += vml_->getWriteStringSize(uint(str.size()));
   }
 
   return size;
@@ -117,27 +117,27 @@ write(CFile *file)
 {
   uint pc = pc_;
 
-  if (! file->write((char *) &pc_, sizeof(pc)))
+  if (! file->write(reinterpret_cast<char *>(&pc_), sizeof(pc)))
     return false;
 
   uint type = type_;
 
-  if (! file->write((char *) &type, sizeof(type)))
+  if (! file->write(reinterpret_cast<char *>(&type), sizeof(type)))
     return false;
 
-  if (! file->write((char *) &dim_, sizeof(dim_)))
+  if (! file->write(reinterpret_cast<char *>(&dim_), sizeof(dim_)))
     return false;
 
   if      (type_ == DATA_TYPE_CHAR) {
     uint value = getCharValue();
 
-    if (! file->write((char *) &value, sizeof(value)))
+    if (! file->write(reinterpret_cast<char *>(&value), sizeof(value)))
       return false;
   }
   else if (type_ == DATA_TYPE_INTEGER) {
     uint integer = getIntegerValue();
 
-    if (! file->write((char *) &integer, sizeof(integer)))
+    if (! file->write(reinterpret_cast<char *>(&integer), sizeof(integer)))
       return false;
   }
   else {
@@ -158,21 +158,21 @@ read(CVML &vml, CFile *file, uint *size)
 
   uint pc;
 
-  if (! file->read((uchar *) &pc, sizeof(pc)))
+  if (! file->read(reinterpret_cast<uchar *>(&pc), sizeof(pc)))
     return NULL;
 
   *size += sizeof(pc);
 
   uint type;
 
-  if (! file->read((uchar *) &type, sizeof(type)))
+  if (! file->read(reinterpret_cast<uchar *>(&type), sizeof(type)))
     return NULL;
 
   *size += sizeof(type);
 
   int dim;
 
-  if (! file->read((uchar *) &dim, sizeof(dim)))
+  if (! file->read(reinterpret_cast<uchar *>(&dim), sizeof(dim)))
     return NULL;
 
   *size += sizeof(dim);
@@ -182,7 +182,7 @@ read(CVML &vml, CFile *file, uint *size)
   if      (type == CVMLData::DATA_TYPE_CHAR) {
     uint c;
 
-    if (! file->read((uchar *) &c, sizeof(c)))
+    if (! file->read(reinterpret_cast<uchar *>(&c), sizeof(c)))
       return NULL;
 
     *size += sizeof(c);
@@ -192,12 +192,12 @@ read(CVML &vml, CFile *file, uint *size)
   else if (type == CVMLData::DATA_TYPE_INTEGER) {
     int integer;
 
-    if (! file->read((uchar *) &integer, sizeof(integer)))
+    if (! file->read(reinterpret_cast<uchar *>(&integer), sizeof(integer)))
       return NULL;
 
     *size += sizeof(integer);
 
-    data = new CVMLData(&vml, pc, integer, dim);
+    data = new CVMLData(&vml, pc, ushort(integer), dim);
   }
   else if (type == CVMLData::DATA_TYPE_STRING) {
     std::string str;
@@ -222,23 +222,23 @@ readMemory(CVML &vml, CFile *file, uint *size)
 
   uint pc;
 
-  if (! file->read((uchar *) &pc, sizeof(pc)))
+  if (! file->read(reinterpret_cast<uchar *>(&pc), sizeof(pc)))
     return false;
 
-  vml.setRegisterWord(PC_NUM, pc);
+  vml.setRegisterWord(PC_NUM, ushort(pc));
 
   *size += sizeof(pc);
 
   uint type;
 
-  if (! file->read((uchar *) &type, sizeof(type)))
+  if (! file->read(reinterpret_cast<uchar *>(&type), sizeof(type)))
     return false;
 
   *size += sizeof(type);
 
   int dim;
 
-  if (! file->read((uchar *) &dim, sizeof(dim)))
+  if (! file->read(reinterpret_cast<uchar *>(&dim), sizeof(dim)))
     return false;
 
   *size += sizeof(dim);
@@ -246,35 +246,35 @@ readMemory(CVML &vml, CFile *file, uint *size)
   if      (type == CVMLData::DATA_TYPE_CHAR) {
     uint c;
 
-    if (! file->read((uchar *) &c, sizeof(c)))
+    if (! file->read(reinterpret_cast<uchar *>(&c), sizeof(c)))
       return false;
 
     *size += sizeof(c);
 
-    char c1 = c;
+    char c1 = char(c);
 
     if (dim == 0)
       vml.setMemoryByte(vml.getRegisterWord(PC_NUM), c1);
     else {
       for (int i = 0; i < dim; ++i)
-        vml.setMemoryByte(vml.getRegisterWord(PC_NUM) + i, c1);
+        vml.setMemoryByte(vml.getRegisterWord(PC_NUM) + ushort(i), c1);
     }
   }
   else if (type == CVMLData::DATA_TYPE_INTEGER) {
     uint integer;
 
-    if (! file->read((uchar *) &integer, sizeof(integer)))
+    if (! file->read(reinterpret_cast<uchar *>(&integer), sizeof(integer)))
       return false;
 
     *size += sizeof(integer);
 
-    short s = integer;
+    short s = short(integer);
 
     if (dim == 0)
       vml.setMemoryWord(vml.getRegisterWord(PC_NUM), s);
     else {
       for (int i = 0; i < dim; ++i)
-        vml.setMemoryWord(vml.getRegisterWord(PC_NUM) + 2*i, s);
+        vml.setMemoryWord(vml.getRegisterWord(PC_NUM) + ushort(2*i), s);
     }
   }
   else if (type == CVMLData::DATA_TYPE_STRING) {
@@ -333,18 +333,18 @@ getValuesLen()
     if (dim_ == 0)
       len += sizeof(short);
     else
-      len += dim_*sizeof(short);
+      len += uint(dim_*sizeof(short));
   }
   else if (type_ == DATA_TYPE_INTEGER) {
     if (dim_ == 0)
       len += sizeof(short);
     else
-      len += dim_*sizeof(short);
+      len += uint(dim_*sizeof(short));
   }
   else {
     const std::string &str = vml_->lookupIdString(getStringValue());
 
-    len = vml_->getWriteStringLen(str.size())/2;
+    len = vml_->getWriteStringLen(uint(str.size())/2);
   }
 
   return true;

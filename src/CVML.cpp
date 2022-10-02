@@ -91,7 +91,7 @@ bool
 CVML::
 stringToChar(const std::string &str, char *c)
 {
-  uint len = str.size();
+  uint len = uint(str.size());
 
   if (len == 1)
     *c = str[0];
@@ -224,7 +224,7 @@ getVariableValue(const std::string &name, uint *value)
   if (! getVariableAddress(name, &addr))
     return false;
 
-  *value = getMemoryWord(addr);
+  *value = getMemoryWord(ushort(addr));
 
   return true;
 }
@@ -431,7 +431,7 @@ syntaxError()
 
   uint pos = parse_->getPos();
 
-  uint len = line_.size();
+  uint len = uint(line_.size());
 
   std::cerr << line_ << std::endl;
 
@@ -512,7 +512,7 @@ CVMLOp *
 CVML::
 instructionToOp(CVMLDataSource *src)
 {
-  ushort save_pc = pc_;
+  ushort save_pc = ushort(pc_);
 
   ushort s;
 
@@ -533,10 +533,10 @@ instructionToOp(CVMLDataSource *src)
   CVMLOp *op = new CVMLOp(*this, op_code, save_pc, line_num_);
 
   if (op->isArgument(0))
-    setArgumentModeData(op->getArgument(0), mode1, data1, extraData1);
+    setArgumentModeData(op->getArgument(0), ushort(mode1), ushort(data1), ushort(extraData1));
 
   if (op->isArgument(1))
-    setArgumentModeData(op->getArgument(1), mode2, data2, extraData2);
+    setArgumentModeData(op->getArgument(1), ushort(mode2), ushort(data2), ushort(extraData2));
 
   return op;
 }
@@ -779,35 +779,22 @@ CVMLOpCode *
 CVML::
 getOpCode2(ushort i)
 {
-  ushort i1 = i & op_code_data_2.instn_mask;
+  ushort i1 = ushort(i & op_code_data_2.instn_mask);
 
   switch (i1) {
-    case OP_CODE_MOV:
-      return &op_code_mov;
-    case OP_CODE_CMP:
-      return &op_code_cmp;
-    case OP_CODE_AND:
-      return &op_code_and;
-    case OP_CODE_XOR:
-      return &op_code_xor;
-    case OP_CODE_OR:
-      return &op_code_or;
-    case OP_CODE_ADD:
-      return &op_code_add;
-    case OP_CODE_MOVB:
-      return &op_code_movb;
-    case OP_CODE_CMPB:
-      return &op_code_cmpb;
-    case OP_CODE_ANDB:
-      return &op_code_andb;
-    case OP_CODE_XORB:
-      return &op_code_xorb;
-    case OP_CODE_ORB:
-      return &op_code_orb;
-    case OP_CODE_SUB:
-      return &op_code_sub;
-    default:
-      return NULL;
+    case OP_CODE_MOV : return &op_code_mov;
+    case OP_CODE_CMP : return &op_code_cmp;
+    case OP_CODE_AND : return &op_code_and;
+    case OP_CODE_XOR : return &op_code_xor;
+    case OP_CODE_OR  : return &op_code_or;
+    case OP_CODE_ADD : return &op_code_add;
+    case OP_CODE_MOVB: return &op_code_movb;
+    case OP_CODE_CMPB: return &op_code_cmpb;
+    case OP_CODE_ANDB: return &op_code_andb;
+    case OP_CODE_XORB: return &op_code_xorb;
+    case OP_CODE_ORB : return &op_code_orb;
+    case OP_CODE_SUB : return &op_code_sub;
+    default: return NULL;
   }
 }
 
@@ -815,25 +802,17 @@ CVMLOpCode *
 CVML::
 getOpCode1H(ushort i)
 {
-  ushort i1 = i & op_code_data_1H.instn_mask;
+  ushort i1 = ushort(i & op_code_data_1H.instn_mask);
 
   switch (i1) {
-    case OP_CODE_CALL:
-      return &op_code_call;
-    case OP_CODE_MUL:
-      return &op_code_mul;
-    case OP_CODE_DIV:
-      return &op_code_div;
-    case OP_CODE_SLL:
-      return &op_code_sll;
-    case OP_CODE_SLC:
-      return &op_code_slc;
-    case OP_CODE_SRL:
-      return &op_code_srl;
-    case OP_CODE_SRC:
-      return &op_code_src;
-    default:
-      return NULL;
+    case OP_CODE_CALL: return &op_code_call;
+    case OP_CODE_MUL : return &op_code_mul;
+    case OP_CODE_DIV : return &op_code_div;
+    case OP_CODE_SLL : return &op_code_sll;
+    case OP_CODE_SLC : return &op_code_slc;
+    case OP_CODE_SRL : return &op_code_srl;
+    case OP_CODE_SRC : return &op_code_src;
+    default: return NULL;
   }
 }
 
@@ -841,33 +820,21 @@ CVMLOpCode *
 CVML::
 getOpCode1a(ushort i)
 {
-  ushort i1 = i & op_code_data_1a.instn_mask;
+  ushort i1 = ushort(i & op_code_data_1a.instn_mask);
 
   switch (i1) {
-    case OP_CODE_BRN:
-      return &op_code_brn;
-    case OP_CODE_BNE:
-      return &op_code_bne;
-    case OP_CODE_BEQ:
-      return &op_code_beq;
-    case OP_CODE_BGE:
-      return &op_code_bge;
-    case OP_CODE_BLT:
-      return &op_code_blt;
-    case OP_CODE_BGT:
-      return &op_code_bgt;
-    case OP_CODE_BLE:
-      return &op_code_ble;
-    case OP_CODE_BVC:
-      return &op_code_bvc;
-    case OP_CODE_BVS:
-      return &op_code_bvs;
-    case OP_CODE_BCC:
-      return &op_code_bcc;
-    case OP_CODE_BCS:
-      return &op_code_bcs;
-    default:
-      return NULL;
+    case OP_CODE_BRN: return &op_code_brn;
+    case OP_CODE_BNE: return &op_code_bne;
+    case OP_CODE_BEQ: return &op_code_beq;
+    case OP_CODE_BGE: return &op_code_bge;
+    case OP_CODE_BLT: return &op_code_blt;
+    case OP_CODE_BGT: return &op_code_bgt;
+    case OP_CODE_BLE: return &op_code_ble;
+    case OP_CODE_BVC: return &op_code_bvc;
+    case OP_CODE_BVS: return &op_code_bvs;
+    case OP_CODE_BCC: return &op_code_bcc;
+    case OP_CODE_BCS: return &op_code_bcs;
+    default: return NULL;
   }
 }
 
@@ -875,17 +842,13 @@ CVMLOpCode *
 CVML::
 getOpCode1b(ushort i)
 {
-  ushort i1 = i & op_code_data_1b.instn_mask;
+  ushort i1 = ushort(i & op_code_data_1b.instn_mask);
 
   switch (i1) {
-    case OP_CODE_NOT:
-      return &op_code_not;
-    case OP_CODE_NEG:
-      return &op_code_neg;
-    case OP_CODE_SWAB:
-      return &op_code_swab;
-    default:
-      return NULL;
+    case OP_CODE_NOT : return &op_code_not;
+    case OP_CODE_NEG : return &op_code_neg;
+    case OP_CODE_SWAB: return &op_code_swab;
+    default: return NULL;
   }
 }
 
@@ -893,13 +856,11 @@ CVMLOpCode *
 CVML::
 getOpCode0H(ushort i)
 {
-  ushort i1 = i & op_code_data_0H.instn_mask;
+  ushort i1 = ushort(i & op_code_data_0H.instn_mask);
 
   switch (i1) {
-    case OP_CODE_EXIT:
-      return &op_code_exit;
-    default:
-      return NULL;
+    case OP_CODE_EXIT: return &op_code_exit;
+    default: return NULL;
   }
 }
 
@@ -907,15 +868,12 @@ CVMLOpCode *
 CVML::
 getOpCode0(ushort i)
 {
-  ushort i1 = i & op_code_data_0.instn_mask;
+  ushort i1 = ushort(i & op_code_data_0.instn_mask);
 
   switch (i1) {
-    case OP_CODE_STOP:
-      return &op_code_stop;
-    case OP_CODE_NOP:
-      return &op_code_nop;
-    default:
-      return NULL;
+    case OP_CODE_STOP: return &op_code_stop;
+    case OP_CODE_NOP : return &op_code_nop;
+    default: return NULL;
   }
 }
 
@@ -991,7 +949,7 @@ void
 CVML::
 outputString(CFile *file, const std::string &str)
 {
-  uint len = str.size();
+  uint len = uint(str.size());
 
   uint len1 = getWriteStringLen(len)/2;
 
@@ -1023,7 +981,7 @@ void
 CVML::
 outputValue(CFile *file, ushort value)
 {
-  file->write((const char *) &value, sizeof(value));
+  file->write(reinterpret_cast<const char *>(&value), sizeof(value));
 
   pc_ += 2;
 }
@@ -1032,7 +990,7 @@ ushort
 CVML::
 addOpValue(ushort value, ushort value1, ushort shift1, ushort mask1)
 {
-  ushort rvalue = value | ((value1 & mask1) << shift1);
+  ushort rvalue = ushort(value | ((value1 & mask1) << shift1));
 
   return rvalue;
 }
@@ -1080,7 +1038,7 @@ unsignedToSigned(ushort u)
   short s;
 
   if (u & 0x8000)
-    s = -((u ^ 0xFFFF) + 1);
+    s = short(-((u ^ 0xFFFF) + 1));
   else
     s = u;
 
@@ -1094,7 +1052,7 @@ signedToUnsigned(short s)
   ushort u;
 
   if (s < 0)
-    u = ((-s) ^ 0xFFFF) + 1;
+    u = ushort(((-s) ^ 0xFFFF)) + 1;
   else
     u = s;
 
@@ -1108,7 +1066,7 @@ unsignedToSigned(uchar u)
   char s;
 
   if (u & 0x80)
-    s = -((u ^ 0xFF) + 1);
+    s = char(-((u ^ 0xFF) + 1));
   else
     s = u;
 
@@ -1122,7 +1080,7 @@ signedToUnsigned(char s)
   uchar u;
 
   if (s < 0)
-    u = ((-s) ^ 0xFF) + 1;
+    u = uchar(((-s) ^ 0xFF) + 1);
   else
     u = s;
 
